@@ -1,0 +1,11 @@
+com\sanjayverma\portfolio\repository\UserRepository.class
+com\sanjayverma\portfolio\controller\AuthController.class
+com\sanjayverma\portfolio\service\ProjectService.class
+com\sanjayverma\portfolio\controller\HomeController.class
+com\sanjayverma\portfolio\controller\ProjectController.class
+com\sanjayverma\portfolio\PortfolioApplication.class
+com\sanjayverma\portfolio\controller\TestController.class
+com\sanjayverma\portfolio\model\User.class
+com\sanjayverma\portfolio\repository\ProjectRepository.class
+com\sanjayverma\portfolio\service\EmailService.class
+com\sanjayverma\portfolio\model\Project.class
