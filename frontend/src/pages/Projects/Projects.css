@@ -1,0 +1,343 @@
+/* MAIN WRAPPER */
+.projects-page-outer {
+  min-height: 100vh;
+  padding: 48px 20px;
+  background: linear-gradient(180deg, #05060a 0%, #07060b 60%);
+  color: #e6eef6;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+/* HEADER */
+.projects-header {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: center;
+}
+
+.title-gradient {
+  font-size: 2.6rem;
+  margin: 0;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+.subtitle {
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+/* ADMIN LOGIN BUTTON */
+.admin-login-btn {
+  background: rgba(255,255,255,0.05);
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  font-weight: 700;
+  cursor: pointer;
+  width: fit-content;
+  align-self: center;
+  transition: 0.25s;
+}
+
+.admin-login-btn:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+/* ADD BUTTON */
+.add-btn {
+  padding: 10px 24px;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  color: #041017;
+  transition: 0.25s ease-out;
+  width: fit-content;
+  align-self: center;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,234,255,0.15);
+}
+
+/* CONTROLS SECTION */
+.controls {
+  max-width: 1200px;
+  margin: 10px auto 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: transparent;
+  color: #cfefff;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.filter-btn.active {
+  background: linear-gradient(90deg,#00eaff33,#ff00e133);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,234,255,0.08);
+}
+
+.search-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  color: #e6eef6;
+  outline: none;
+  width: 320px;
+}
+
+/* ADD / EDIT PANEL */
+.add-project-panel {
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.add-project-panel h2 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.add-project-panel input,
+.add-project-panel textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d6e9f7;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.25s;
+}
+
+.add-project-panel input:focus,
+.add-project-panel textarea:focus {
+  border-color: #00eaff;
+  background: rgba(255,255,255,0.1);
+}
+
+.save-project-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  border: none;
+  border-radius: 12px;
+  color: #041017;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.save-project-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,234,255,0.15);
+}
+
+/* GRID WRAPPER */
+.projects-grid-wrap {
+  max-width: 1200px;
+  margin: 24px auto 80px;
+  padding: 0 12px;
+}
+
+/* GRID */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 26px;
+}
+
+/* PROJECT CARD */
+.project-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  transition: 0.25s;
+  position: relative;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,234,255,0.08);
+}
+
+/* IMAGE */
+.card-image {
+  height: 150px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.35));
+}
+
+/* META */
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  margin-top: -36px;
+}
+
+.card-year {
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.card-category {
+  color: #bfe8ff;
+  opacity: 0.9;
+}
+
+/* BODY */
+.card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-title {
+  color: white;
+  font-size: 1.15rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.card-desc {
+  color: #cfefff;
+  opacity: 0.85;
+}
+
+/* TECHNOLOGIES */
+.card-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,234,255,0.1);
+  font-size: 0.8rem;
+  color: #bfe8ff;
+}
+
+/* LINKS */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.btn-outline,
+.btn-primary {
+  padding: 9px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.btn-outline {
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #cfefff;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg,#00eaff,#ff00e1);
+  color: #041017;
+}
+
+/* ADMIN ACTION BUTTONS */
+.admin-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.25s;
+  border: none;
+}
+
+.edit-btn {
+  background: rgba(0,234,255,0.15);
+  color: #00eaff;
+}
+
+.delete-btn {
+  background: rgba(255,0,80,0.15);
+  color: #ff3b6b;
+}
+
+.edit-btn:hover {
+  background: rgba(0,234,255,0.25);
+}
+
+.delete-btn:hover {
+  background: rgba(255,0,80,0.25);
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .search-input {
+    width: 100%;
+  }
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

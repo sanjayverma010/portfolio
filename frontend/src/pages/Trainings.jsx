@@ -1,30 +1,18 @@
-import { motion } from "framer-motion";
+import Timeline from '../components/Timeline';
 
-export default function Trainings() {
-  const trainings = [
-    "Web Development - Pahal Horizon",
-    "Drone Bootcamp - 1st Year",
-    "IoT Real Life Applications"
-  ];
+export default function Training() {
+  const [trainings, setTrainings] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/trainings')
+      .then(res => res.json())
+      .then(data => setTrainings(data));
+  }, []);
 
   return (
-    <motion.div 
-      className="p-8 text-center text-white"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h1 className="text-4xl font-bold mb-6">Trainings</h1>
-      <ul className="list-disc list-inside space-y-3">
-        {trainings.map((train, index) => (
-          <motion.li 
-            key={index}
-            whileHover={{ scale: 1.05 }}
-          >
-            {train}
-          </motion.li>
-        ))}
-      </ul>
-    </motion.div>
+    <section>
+      <h1>Training & Experience</h1>
+      <Timeline items={trainings} />
+    </section>
   );
 }

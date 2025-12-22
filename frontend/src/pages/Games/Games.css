@@ -1,0 +1,313 @@
+/* PAGE OUTER */
+.games-page-outer {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, #05060a, #07060b);
+  color: #e6eef6;
+  font-family: Inter, sans-serif;
+}
+
+/* HEADER */
+.games-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title-gradient {
+  font-size: 2.6rem;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+.subtitle {
+  opacity: 0.6;
+  margin-top: 10px;
+}
+
+/* ===============================
+      ADD GAME BUTTON
+   =============================== */
+.add-game-btn {
+  margin-top: 18px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #041017;
+  cursor: pointer;
+  transition: 0.28s ease;
+}
+
+.add-game-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 234, 255, 0.18);
+}
+
+/* ===============================
+      ADD GAME PANEL
+   =============================== */
+.add-game-panel {
+  max-width: 700px;
+  margin: 28px auto 40px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  animation: fadeSlide 0.35s ease forwards;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-game-panel input,
+.add-game-panel textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e6eef6;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.22s ease;
+}
+
+.add-game-panel textarea {
+  min-height: 90px;
+  resize: none;
+}
+
+.add-game-panel input:focus,
+.add-game-panel textarea:focus {
+  border-color: #00eaff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* SAVE BUTTON */
+.save-game-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  color: #041017;
+  cursor: pointer;
+  transition: 0.35s ease;
+}
+
+.save-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 234, 255, 0.22);
+}
+
+/* ===============================
+            GAMES GRID
+   =============================== */
+
+.games-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 26px;
+}
+
+/* ===============================
+            GAME CARD
+   =============================== */
+.game-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s;
+}
+
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 6px 26px rgba(0, 234, 255, 0.08);
+}
+
+/* ICON */
+.game-icon {
+  font-size: 44px;
+  margin-bottom: 14px;
+}
+
+/* TITLES */
+.game-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.game-level {
+  color: #00eaff;
+  font-weight: 600;
+}
+
+.game-exp {
+  opacity: 0.75;
+}
+
+/* ROLE */
+.game-role {
+  background: rgba(0, 234, 255, 0.12);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+/* DESCRIPTION */
+.game-description {
+  margin-top: 12px;
+  opacity: 0.85;
+}
+
+/* SECTION TITLES */
+.game-section h4 {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* LIST */
+.game-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.game-section li {
+  margin: 6px 0;
+  opacity: 0.85;
+}
+
+/* LOADING */
+.games-loading {
+  padding: 50px;
+  text-align: center;
+  color: #00eaff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .title-gradient {
+    font-size: 2.1rem;
+  }
+
+  .add-game-btn {
+    width: 100%;
+  }
+
+  .add-game-panel {
+    padding: 18px;
+  }
+}
+/* ADMIN BUTTON */
+.admin-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #dff6ff;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* EDIT & DELETE BUTTONS */
+.game-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #e6eef6;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.icon-btn.danger {
+  background: rgba(255,0,80,0.12);
+  color: #ffb3c2;
+}
+
+/* EDIT POPUP */
+.edit-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+}
+
+.edit-popup-content {
+  width: 90%;
+  max-width: 460px;
+  background: rgba(255,255,255,0.05);
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.edit-popup-content input,
+.edit-popup-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #e6eef6;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.edit-actions button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-actions button:first-child {
+  background: linear-gradient(90deg,#00eaff,#ff00e1);
+  color: black;
+}
+
+.edit-actions button:last-child {
+  background: rgba(255,255,255,0.12);
+  color: white;
+}

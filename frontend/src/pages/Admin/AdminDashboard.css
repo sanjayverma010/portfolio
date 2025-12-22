@@ -1,0 +1,116 @@
+/* Admin Dashboard Page */
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 40px;
+  background: linear-gradient(135deg, #0a0f1f 0%, #1b1f36 100%);
+  color: #e6eef6;
+  font-family: Inter, sans-serif;
+}
+
+/* Header row */
+.admin-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-top h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Logout button */
+.logout-btn {
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+/* Welcome Text */
+.welcome {
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+/* Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+/* Cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 25px;
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 234, 255, 0.18);
+}
+
+/* Stats number */
+.stat-card h2 {
+  margin: 0;
+  font-size: 2.4rem;
+  color: #00eaff;
+  font-weight: 700;
+}
+
+.stat-card p {
+  margin: 10px 0 20px;
+  opacity: 0.8;
+  font-size: 1rem;
+}
+
+/* Link button in card */
+.card-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: linear-gradient(90deg, #00eaff, #ff00e1);
+  border-radius: 8px;
+  text-decoration: none;
+  color: #0a0f1f;
+  font-weight: 800;
+  transition: 0.3s;
+}
+
+.card-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .admin-top h1 {
+    font-size: 1.8rem;
+  }
+
+  .logout-btn {
+    padding: 8px 14px;
+  }
+
+  .stat-card h2 {
+    font-size: 2rem;
+  }
+}

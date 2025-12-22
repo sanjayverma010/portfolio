@@ -1,0 +1,16 @@
+# ============================================
+# NOTIFICATIONS
+# ============================================
+
+app.notifications.enabled=true
+
+# ---------- EMAIL NOTIFICATION ----------
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=rssanjayverma010@gmail.com
+spring.mail.password=gbsyaxpdbwimpvcz
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# ---------- WHATSAPP (DISABLED) ----------
+app.notifications.whatsapp.enabled=false
