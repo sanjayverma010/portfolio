@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.sanjayverma.portfolio.model.Project;
 import com.sanjayverma.portfolio.repository.ProjectRepository;
@@ -21,23 +19,67 @@ public class ProjectController {
     private ProjectRepository projectRepository;
 
     // ===========================
-    // GET ALL PROJECTS (PUBLIC)
+    // 🌍 GET ALL PROJECTS (PUBLIC)
     // ===========================
     @GetMapping
     public ResponseEntity<List<Project>> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        return ResponseEntity.ok(projects);
+        return ResponseEntity.ok(projectRepository.findAll());
     }
 
     // ===========================
-    // GET PROJECT BY ID (PUBLIC)
+    // 🌍 GET PROJECT BY ID (PUBLIC)
     // ===========================
     @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
-        Optional<Project> project = projectRepository.findById(id);
-
-        return project
+        return projectRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ===========================
+    // 🔐 ADD PROJECT (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<Project> addProject(@RequestBody Project project) {
+        Project saved = projectRepository.save(project);
+        return ResponseEntity.ok(saved);
+    }
+
+    // ===========================
+    // 🔐 UPDATE PROJECT (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<Project> updateProject(
+            @PathVariable Long id,
+            @RequestBody Project updatedProject
+    ) {
+        return projectRepository.findById(id)
+                .map(existing -> {
+                    existing.setTitle(updatedProject.getTitle());
+                    existing.setDescription(updatedProject.getDescription());
+                    existing.setGithubLink(updatedProject.getGithubLink());
+                    existing.setLiveDemoLink(updatedProject.getLiveDemoLink());
+                    existing.setTechnologies(updatedProject.getTechnologies());
+
+                    Project saved = projectRepository.save(existing);
+                    return ResponseEntity.ok(saved);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ===========================
+    // 🔐 DELETE PROJECT (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
+        if (!projectRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        projectRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

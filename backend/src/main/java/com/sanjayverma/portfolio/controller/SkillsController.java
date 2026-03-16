@@ -5,14 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.sanjayverma.portfolio.model.Skill;
 import com.sanjayverma.portfolio.repository.SkillRepository;
@@ -25,7 +19,7 @@ public class SkillsController {
     private SkillRepository skillRepository;
 
     // ===========================
-    // GET ALL SKILLS
+    // 🌍 GET ALL SKILLS (PUBLIC)
     // ===========================
     @GetMapping
     public ResponseEntity<List<Skill>> getAllSkills() {
@@ -33,18 +27,19 @@ public class SkillsController {
     }
 
     // ===========================
-    // GET SKILL BY ID
+    // 🌍 GET SKILL BY ID (PUBLIC)
     // ===========================
     @GetMapping("/{id}")
     public ResponseEntity<Skill> getSkillById(@PathVariable Long id) {
-        Optional<Skill> skill = skillRepository.findById(id);
-        return skill.map(ResponseEntity::ok)
+        return skillRepository.findById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // ===========================
-    // ADD NEW SKILL
+    // 🔐 ADD NEW SKILL (ADMIN ONLY)
     // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) {
         Skill saved = skillRepository.save(skill);
@@ -52,14 +47,15 @@ public class SkillsController {
     }
 
     // ===========================
-    // UPDATE SKILL
+    // 🔐 UPDATE SKILL (ADMIN ONLY)
     // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Skill> updateSkill(
             @PathVariable Long id,
             @RequestBody Skill updatedSkill) {
-        Optional<Skill> existing = skillRepository.findById(id);
 
+        Optional<Skill> existing = skillRepository.findById(id);
         if (existing.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -75,13 +71,15 @@ public class SkillsController {
     }
 
     // ===========================
-    // DELETE SKILL
+    // 🔐 DELETE SKILL (ADMIN ONLY)
     // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
         if (!skillRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
         skillRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

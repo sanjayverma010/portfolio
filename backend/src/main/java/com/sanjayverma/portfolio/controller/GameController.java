@@ -5,14 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.sanjayverma.portfolio.model.Game;
 import com.sanjayverma.portfolio.repository.GameRepository;
@@ -24,32 +18,44 @@ public class GameController {
     @Autowired
     private GameRepository gameRepository;
 
-    // GET ALL GAMES
+    // ===========================
+    // 🌍 GET ALL GAMES (PUBLIC)
+    // ===========================
     @GetMapping
     public ResponseEntity<List<Game>> getAllGames() {
         return ResponseEntity.ok(gameRepository.findAll());
     }
 
-    // GET BY ID
+    // ===========================
+    // 🌍 GET GAME BY ID (PUBLIC)
+    // ===========================
     @GetMapping("/{id}")
     public ResponseEntity<Game> getGameById(@PathVariable Long id) {
-        Optional<Game> game = gameRepository.findById(id);
-        return game.map(ResponseEntity::ok)
+        return gameRepository.findById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // CREATE NEW GAME
+    // ===========================
+    // 🔐 CREATE NEW GAME (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
         Game saved = gameRepository.save(game);
         return ResponseEntity.ok(saved);
     }
 
-    // UPDATE GAME
+    // ===========================
+    // 🔐 UPDATE GAME (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game updated) {
-        Optional<Game> existing = gameRepository.findById(id);
+    public ResponseEntity<Game> updateGame(
+            @PathVariable Long id,
+            @RequestBody Game updated) {
 
+        Optional<Game> existing = gameRepository.findById(id);
         if (existing.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -67,12 +73,16 @@ public class GameController {
         return ResponseEntity.ok(gameRepository.save(game));
     }
 
-    // DELETE GAME
+    // ===========================
+    // 🔐 DELETE GAME (ADMIN ONLY)
+    // ===========================
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long id) {
         if (!gameRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
         gameRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
