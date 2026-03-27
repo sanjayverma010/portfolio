@@ -1,6 +1,6 @@
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { motion } from "framer-motion";
 
 export default function Achievements() {
 
@@ -12,7 +12,6 @@ export default function Achievements() {
     const fetchAchievements = async () => {
 
       try {
-
         const res = await API.get("/achievements");
 
         if (Array.isArray(res.data)) {
@@ -46,15 +45,11 @@ export default function Achievements() {
       <div style={timeline}>
 
         {loading && (
-          <p style={{ textAlign: "center", opacity: 0.7 }}>
-            Loading achievements...
-          </p>
+          <p style={message}>Loading achievements...</p>
         )}
 
         {!loading && items.length === 0 && (
-          <p style={{ textAlign: "center", opacity: 0.7 }}>
-            No achievements found
-          </p>
+          <p style={message}>No achievements found</p>
         )}
 
         {items.map((a, i) => (
@@ -66,6 +61,7 @@ export default function Achievements() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            whileHover={{ scale: 1.02 }}
           >
 
             <div style={dot}></div>
@@ -101,9 +97,9 @@ export default function Achievements() {
 /* ================= STYLES ================= */
 
 const page = {
-  minHeight: "100vh",
-  padding: "70px 20px",
-  background: "radial-gradient(circle at top,#0b1224,#020617)",
+  minHeight: "auto",
+  padding: "120px 20px 60px 20px",
+  background: "linear-gradient(180deg,#05060a,#0a0f1e)",
   color: "#e6f0ff"
 };
 
@@ -119,14 +115,17 @@ const title = {
 
 const timeline = {
   maxWidth: 900,
-  margin: "0 auto"
+  margin: "0 auto",
+  borderLeft: "2px solid rgba(255,255,255,0.15)",
+  paddingLeft: 30
 };
 
 const row = {
   display: "flex",
   alignItems: "flex-start",
   gap: 24,
-  marginBottom: 40
+  marginBottom: 40,
+  position: "relative"
 };
 
 const dot = {
@@ -135,7 +134,9 @@ const dot = {
   marginTop: 18,
   borderRadius: "50%",
   background: "#00eaff",
-  boxShadow: "0 0 15px #00eaff"
+  boxShadow: "0 0 15px #00eaff",
+  position: "absolute",
+  left: -37
 };
 
 const card = {
@@ -163,4 +164,9 @@ const badge = {
   fontWeight: 700,
   background: "linear-gradient(90deg,#00eaff33,#ff00e133)",
   border: "1px solid rgba(255,255,255,0.2)"
+};
+
+const message = {
+  textAlign: "center",
+  opacity: 0.7
 };

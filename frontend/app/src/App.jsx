@@ -6,38 +6,64 @@ import Achievements from "./pages/Achievements";
 import Certifications from "./pages/Certifications";
 import Trainings from "./pages/Trainings";
 
-export default function App() {
+function App() {
   return (
-    <div>
+    <div style={styles.page}>
 
-      <section id="home">
+      {/* HOME */}
+      <section id="home" style={styles.homeSection}>
         <Home />
       </section>
 
-      <section id="skills">
+      {/* ALL OTHER SECTIONS */}
+      <section id="skills" style={styles.section}>
         <Skills />
       </section>
 
-      <section id="projects">
+      <section id="projects" style={styles.section}>
         <Projects />
       </section>
 
-      <section id="achievements">
+      <section id="achievements" style={styles.section}>
         <Achievements />
       </section>
 
-      <section id="certifications">
+      <section id="certifications" style={styles.section}>
         <Certifications />
       </section>
 
-      <section id="trainings">
+      <section id="trainings" style={styles.section}>
         <Trainings />
       </section>
 
-      <section id="contact">
+      <section id="contact" style={styles.section}>
         <Contact />
       </section>
 
     </div>
   );
 }
+
+export default App;
+
+/* ================= STYLES ================= */
+
+const styles = {
+  page: {
+    background: "linear-gradient(180deg,#05060a,#0a0f1e)",
+    color: "#e6f0ff",
+    scrollBehavior: "smooth",
+  },
+
+  homeSection: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  section: {
+    padding: "60px 20px",   // 👈 reduced gap
+    scrollMarginTop: "80px",
+  },
+};

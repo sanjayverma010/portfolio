@@ -1,6 +1,7 @@
 package com.sanjayverma.portfolio.filter;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,74 +28,66 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    private static final List<String> PUBLIC_PATHS = List.of(
+            "/api/auth",
+            "/api/projects",
+            "/api/achievements",
+            "/api/trainings",
+            "/api/certifications",
+            "/api/skills",
+            "/api/games",
+            "/api/visitors",
+            "/api/contact");
+
+    // 🔥 Skip filter for explicit PUBLIC APIs
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return PUBLIC_PATHS.stream()
+                .anyMatch(publicPath -> path.equals(publicPath) || path.startsWith(publicPath + "/"));
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getServletPath();
+        final String header = request.getHeader("Authorization");
 
-        // ---------------------------------------------
-        // ✅ 1. SKIP JWT FOR PUBLIC API ROUTES
-        // ---------------------------------------------
-        if (path.startsWith("/api/skills") ||
-            path.startsWith("/api/projects") ||
-            path.startsWith("/api/games") ||
-            path.startsWith("/api/achievements") ||
-            path.startsWith("/api/contact") ||
-            path.startsWith("/api/visitors") ||
-            path.startsWith("/api/trainings") ||
-            path.startsWith("/api/auth/login") ||
-            path.startsWith("/api/auth/validate")
-        ) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        if (header != null && header.startsWith("Bearer ")) {
 
-        // ---------------------------------------------
-        // ✅ 2. PROCESS JWT FOR PROTECTED ROUTES
-        // ---------------------------------------------
-        final String authorizationHeader = request.getHeader("Authorization");
+            String token = header.substring(7);
 
-        String username = null;
-        String jwtToken = null;
-
-        // Extract JWT token
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwtToken = authorizationHeader.substring(7);
             try {
-                username = jwtUtil.extractUsername(jwtToken);
-            } catch (Exception e) {
-                System.out.println("JWT parsing error: " + e.getMessage());
-            }
-        }
+                String username = jwtUtil.extractUsername(token);
 
-        // Validate and set authentication
-        if (username != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (username != null &&
+                        SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails =
-                    this.userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwtToken, userDetails)) {
+                    if (jwtUtil.validateToken(token, userDetails)) {
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
+                        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
-                                userDetails.getAuthorities()
-                        );
+                                userDetails.getAuthorities());
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                        auth.setDetails(
+                                new WebAuthenticationDetailsSource()
+                                        .buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                        SecurityContextHolder.getContext()
+                                .setAuthentication(auth);
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("JWT Error: " + e.getMessage());
             }
         }
 
-        // Continue filter chain
         filterChain.doFilter(request, response);
     }
 }

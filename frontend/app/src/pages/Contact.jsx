@@ -134,8 +134,8 @@ export default function Contact() {
 /* ================= STYLES ================= */
 
 const page = {
-  minHeight: "100vh",
-  padding: "100px 20px",
+  minHeight: "auto",
+  padding: "100px 20px 60px 20px",
   background: "radial-gradient(circle at top,#0b1224,#020617)",
   color: "#e6f0ff",
   textAlign: "center"

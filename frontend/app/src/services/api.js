@@ -12,11 +12,14 @@ const API = axios.create({
 // ------------------------------
 const PUBLIC_URLS = [
   "/auth/login",
+  "/auth/validate",
   "/contact", // only POST contact
   "/projects",
   "/skills",
   "/games",
   "/achievements",
+  "/certifications",
+  "/trainings",  // ✅ ADDED: trainings should be public
   "/visitors"
 ];
 

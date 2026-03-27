@@ -4,10 +4,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.sanjayverma.portfolio.model.Admin;
 import com.sanjayverma.portfolio.model.User;
@@ -27,26 +29,16 @@ public class AdminSetupController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /* ===================== DEV ONLY ===================== */
-    @Profile("dev")
+    /* ===================== PUBLIC SETUP (ONE-TIME USE) ===================== */
     @PostMapping("/setup")
     public String setupAdmin() {
 
-        if (userRepository.findByUsername("admin").isPresent()) {
-            return "Admin already exists";
+        // Check if admin already exists
+        if (adminRepository.findByUsername("admin").isPresent()) {
+            return "Admin already exists! Use /api/admin/reset-password to change password.";
         }
 
-        // -------- USER TABLE --------
-        User adminUser = new User();
-        adminUser.setUsername("admin");
-        adminUser.setEmail("sanjayverma010@gmail.com");
-        adminUser.setPassword(passwordEncoder.encode("admin123"));
-        adminUser.setEnabled(true);
-        adminUser.setRole("ROLE_ADMIN"); // 🔴 IMPORTANT
-
-        userRepository.save(adminUser);
-
-        // -------- ADMIN TABLE --------
+        // Create admin in ADMINS table (this is what CustomUserDetailsService uses)
         Admin admin = new Admin();
         admin.setUsername("admin");
         admin.setPassword(passwordEncoder.encode("admin123"));
@@ -54,7 +46,7 @@ public class AdminSetupController {
 
         adminRepository.save(admin);
 
-        return "Admin created successfully (admin / admin123)";
+        return "Admin created successfully! Username: admin, Password: admin123";
     }
 
     /* ===================== ADMIN ONLY ===================== */

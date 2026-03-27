@@ -1,12 +1,12 @@
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { motion } from "framer-motion";
 
 export default function Skills() {
+
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 TEXT LEVEL → NUMBER MAP
   const levelMap = {
     Beginner: 40,
     Intermediate: 65,
@@ -16,16 +16,19 @@ export default function Skills() {
 
   useEffect(() => {
     API.get("/skills")
-      .then((res) => setSkills(res.data))
+      .then(res => setSkills(res.data || []))
       .catch(() => setSkills([]))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return <p style={{ color: "white", padding: 40 }}>Loading skills...</p>;
+    return (
+      <div style={page}>
+        <p style={loadingText}>Loading skills...</p>
+      </div>
+    );
   }
 
-  // 🔹 GROUP BY CATEGORY
   const grouped = skills.reduce((acc, skill) => {
     acc[skill.category] = acc[skill.category] || [];
     acc[skill.category].push(skill);
@@ -34,6 +37,7 @@ export default function Skills() {
 
   return (
     <div style={page}>
+
       <h1 style={title}>Skills</h1>
 
       {Object.keys(grouped).map((category, idx) => (
@@ -45,17 +49,19 @@ export default function Skills() {
           viewport={{ once: true }}
           style={section}
         >
+
           <h2 style={categoryTitle}>{category}</h2>
 
           {grouped[category].map((skill) => {
-            // 🔥 FINAL LEVEL VALUE
+
             const level =
               typeof skill.level === "number"
                 ? skill.level
                 : levelMap[String(skill.level).replace("%", "")] || 50;
 
             return (
-              <div key={skill.id} style={skillBox}>
+              <div key={skill.id} style={skillCard}>
+
                 <div style={skillHeader}>
                   <span>{skill.name}</span>
                   <span>{level}%</span>
@@ -74,11 +80,14 @@ export default function Skills() {
                 {skill.description && (
                   <p style={desc}>{skill.description}</p>
                 )}
+
               </div>
             );
           })}
+
         </motion.div>
       ))}
+
     </div>
   );
 }
@@ -86,8 +95,8 @@ export default function Skills() {
 /* ================= STYLES ================= */
 
 const page = {
-  padding: "60px 40px",
-  minHeight: "100vh",
+  minHeight: "auto",
+  padding: "120px 40px 60px 40px",
   color: "#e6f0ff",
   background: "linear-gradient(180deg,#05060a,#0a0f1e)",
 };
@@ -96,6 +105,10 @@ const title = {
   fontSize: "2.8rem",
   marginBottom: 40,
   textAlign: "center",
+  fontWeight: 900,
+  background: "linear-gradient(90deg,#00eaff,#ff00e1)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
 };
 
 const section = {
@@ -109,8 +122,13 @@ const categoryTitle = {
   color: "#7dd3fc",
 };
 
-const skillBox = {
+const skillCard = {
   marginBottom: 22,
+  padding: 16,
+  borderRadius: 12,
+  background: "rgba(255,255,255,0.05)",
+  border: "1px solid rgba(255,255,255,0.1)",
+  backdropFilter: "blur(10px)",
 };
 
 const skillHeader = {
@@ -132,10 +150,18 @@ const barFill = {
   height: "100%",
   background: "linear-gradient(90deg,#00eaff,#ff00e1)",
   borderRadius: 999,
+  boxShadow: "0 0 8px #00eaff",
 };
 
 const desc = {
   fontSize: "0.85rem",
   opacity: 0.7,
   marginTop: 6,
+};
+
+const loadingText = {
+  textAlign: "center",
+  padding: 80,
+  fontSize: 18,
+  opacity: 0.7,
 };

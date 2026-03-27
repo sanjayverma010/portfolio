@@ -1,35 +1,46 @@
+
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { motion, AnimatePresence } from "framer-motion";
 
-/* ================= SAFETY ================= */
+/* ================= HELPERS ================= */
+
 const parseTech = (tech) => {
   if (!tech) return [];
   if (Array.isArray(tech)) return tech;
-  return tech.split(",").map(t => t.trim()).filter(Boolean);
+  return tech.split(",").map((t) => t.trim()).filter(Boolean);
+};
+
+const cardAnim = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0 }
 };
 
 export default function Projects() {
+
   const [projects, setProjects] = useState([]);
   const [active, setActive] = useState(null);
 
   useEffect(() => {
     API.get("/projects")
-      .then(res => setProjects(res.data || []))
+      .then((res) => setProjects(res.data || []))
       .catch(() => setProjects([]));
   }, []);
 
   return (
     <div style={page}>
+
       <h1 style={title}>Featured Projects</h1>
 
       <p style={subtitle}>
-        Some of the projects I built using AI, Web Development and Automation
+        Some projects built using Web Development, AI and Automation
       </p>
 
       {projects.length === 0 && (
         <p style={empty}>No projects available</p>
       )}
+
+      {/* ================= PROJECT GRID ================= */}
 
       <motion.div
         style={grid}
@@ -40,26 +51,31 @@ export default function Projects() {
           show: { transition: { staggerChildren: 0.15 } }
         }}
       >
-        {projects.map(p => (
+        {projects.map((p) => (
           <motion.div
             key={p.id}
             variants={cardAnim}
             whileHover={{
-              scale: 1.05,
-              rotateX: 5,
-              rotateY: -5,
-              boxShadow: "0 0 40px rgba(255,0,225,0.4)"
+              scale: 1.04,
+              boxShadow: "0 0 35px rgba(255,0,225,0.35)"
             }}
             style={card}
           >
+
             {p.project_image && (
-              <img src={p.project_image} alt="" style={image} />
+              <img
+                src={p.project_image}
+                alt={p.title}
+                style={image}
+              />
             )}
 
             <h3>{p.title}</h3>
 
             <p style={desc}>
-              {p.description?.slice(0, 90)}...
+              {p.description
+                ? p.description.slice(0, 90) + "..."
+                : "Project description"}
             </p>
 
             <div style={tags}>
@@ -68,9 +84,13 @@ export default function Projects() {
               ))}
             </div>
 
-            <button style={viewBtn} onClick={() => setActive(p)}>
+            <button
+              style={viewBtn}
+              onClick={() => setActive(p)}
+            >
               View Details
             </button>
+
           </motion.div>
         ))}
       </motion.div>
@@ -93,8 +113,13 @@ export default function Projects() {
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
+
               {active.project_image && (
-                <img src={active.project_image} alt="" style={modalImage} />
+                <img
+                  src={active.project_image}
+                  alt={active.title}
+                  style={modalImage}
+                />
               )}
 
               <h2>{active.title}</h2>
@@ -133,30 +158,112 @@ export default function Projects() {
                 )}
               </div>
 
-              <button style={closeBtn} onClick={() => setActive(null)}>
+              <button
+                style={closeBtn}
+                onClick={() => setActive(null)}
+              >
                 Close
               </button>
+
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ================= LIVE DEPLOYMENTS ================= */}
+
+      <h1 style={deployTitle}>Live Deployments</h1>
+
+      <div style={deployGrid}>
+
+        <motion.div style={deployCard} whileHover={{ scale: 1.05 }}>
+
+          <h3>Food Hunter – Restaurant System</h3>
+
+          <p style={desc}>
+            Full-stack restaurant management system with order handling,
+            billing, menu updates and customer service.
+          </p>
+
+          <div style={tags}>
+            <span style={tag}>Spring Boot</span>
+            <span style={tag}>MySQL</span>
+            <span style={tag}>React</span>
+            <span style={tag}>Vercel</span>
+          </div>
+
+          <div style={btnRow}>
+            <a
+              href="https://food-hunter-restaurant.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              style={btn}
+            >
+              Live Demo
+            </a>
+
+            <a
+              href="https://github.com/sanjayverma010"
+              target="_blank"
+              rel="noreferrer"
+              style={btn}
+            >
+              GitHub
+            </a>
+          </div>
+
+        </motion.div>
+
+        <motion.div style={deployCard} whileHover={{ scale: 1.05 }}>
+
+          <h3>Crop Prediction System</h3>
+
+          <p style={desc}>
+            AI-based system that predicts optimal crops using environmental
+            and soil conditions.
+          </p>
+
+          <div style={tags}>
+            <span style={tag}>Python</span>
+            <span style={tag}>Machine Learning</span>
+            <span style={tag}>Flask</span>
+            <span style={tag}>Render</span>
+          </div>
+
+          <div style={btnRow}>
+            <a
+              href="https://crop-prediction-1-opid.onrender.com/"
+              target="_blank"
+              rel="noreferrer"
+              style={btn}
+            >
+              Live Demo
+            </a>
+
+            <a
+              href="https://github.com/sanjayverma010"
+              target="_blank"
+              rel="noreferrer"
+              style={btn}
+            >
+              GitHub
+            </a>
+          </div>
+
+        </motion.div>
+
+      </div>
+
     </div>
   );
 }
 
-/* ================= ANIMATIONS ================= */
-
-const cardAnim = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0 }
-};
-
 /* ================= STYLES ================= */
 
 const page = {
-  minHeight: "100vh",
-  padding: 60,
-  background: "radial-gradient(circle at top,#0b1224,#020617)",
+  minHeight: "auto",
+  padding: "120px 60px 60px 60px",
+  background: "linear-gradient(180deg,#05060a,#0a0f1e)",
   color: "white",
 };
 
@@ -194,7 +301,6 @@ const card = {
   backdropFilter: "blur(14px)",
   border: "1px solid rgba(255,255,255,0.12)",
   boxShadow: "0 0 25px rgba(0,234,255,0.15)",
-  transition: "0.3s",
 };
 
 const image = {
@@ -279,4 +385,29 @@ const closeBtn = {
   background: "linear-gradient(90deg,#00eaff,#ff00e1)",
   fontWeight: 800,
   cursor: "pointer",
+};
+
+const deployTitle = {
+  fontSize: "2.5rem",
+  marginTop: 80,
+  textAlign: "center",
+  background: "linear-gradient(90deg,#00eaff,#ff00e1)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+};
+
+const deployGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+  gap: 30,
+  marginTop: 40,
+};
+
+const deployCard = {
+  background: "rgba(255,255,255,0.06)",
+  padding: 26,
+  borderRadius: 18,
+  backdropFilter: "blur(14px)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  boxShadow: "0 0 25px rgba(0,234,255,0.15)",
 };

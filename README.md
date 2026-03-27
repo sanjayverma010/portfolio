@@ -14,7 +14,7 @@ The backend is powered by **Spring Boot**, while the frontend is built using **H
 - Spring Boot (Java)
 - REST API
 - Maven
-- MySQL (or your database)
+- MySQL 
 - Spring Data JPA
 
 ### **Frontend**

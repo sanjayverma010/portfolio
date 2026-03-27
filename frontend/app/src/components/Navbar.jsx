@@ -1,15 +1,31 @@
-import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 
 export default function Navbar() {
-  const location = useLocation();
 
-  const isActive = (path) => {
-    if (path === "/admin") {
-      return location.pathname.startsWith("/admin");
-    }
-    return location.pathname === path;
-  };
+  const [active, setActive] = useState("home");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["home", "skills", "projects", "achievements", "certifications", "trainings", "contact"];
+      
+      for (let section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom > 150) {
+            setActive(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.header
@@ -19,57 +35,70 @@ export default function Navbar() {
       style={styles.header}
     >
       <div style={styles.nav}>
+
         {/* LOGO */}
-        <Link to="/" style={styles.logo}>
+        <ScrollLink
+          to="home"
+          smooth={true}
+          duration={500}
+          offset={-80}
+          onClick={() => setActive("home")}
+          style={styles.logo}
+        >
           <span style={{ color: "#00eaff" }}>Sanjay</span>
           <span style={{ color: "#ff00e1" }}>Verma</span>
-        </Link>
+        </ScrollLink>
 
-        {/* LINKS */}
+        {/* NAV LINKS */}
         <nav style={styles.links}>
-          <NavItem to="/" label="Home" active={isActive("/")} />
-          <NavItem to="/projects" label="Projects" active={isActive("/projects")} />
-          <NavItem to="/skills" label="Skills" active={isActive("/skills")} />
-          <NavItem to="/achievements" label="Achievements" active={isActive("/achievements")} />
-          <NavItem to="/contact" label="Contact" active={isActive("/contact")} />
+          <NavItem to="home" label="Home" active={active} setActive={setActive}/>
+          <NavItem to="skills" label="Skills" active={active} setActive={setActive}/>
+          <NavItem to="projects" label="Projects" active={active} setActive={setActive}/>
+          <NavItem to="achievements" label="Achievements" active={active} setActive={setActive}/>
+          
+          <NavItem to="certifications" label="Certifications" active={active} setActive={setActive}/>
+          <NavItem to="trainings" label="Trainings" active={active} setActive={setActive}/>
+          <NavItem to="contact" label="Contact" active={active} setActive={setActive}/>
 
-          {/* ADMIN */}
-          <NavItem
-            to="/admin/login"
-            label="Admin"
-            active={isActive("/admin")}
-            admin
-          />
+          <Link to="/admin/login" style={{ ...styles.link, ...styles.admin }}>
+            Admin
+          </Link>
         </nav>
+
       </div>
     </motion.header>
   );
 }
 
-/* ---------------- NAV ITEM ---------------- */
-function NavItem({ to, label, active, admin }) {
+function NavItem({ to, label, active, setActive }) {
+
+  const isActive = active === to;
+
   return (
-    <Link
+    <ScrollLink
       to={to}
+      smooth={true}
+      duration={500}
+      offset={-80}
+      onClick={() => setActive(to)}
       style={{
         ...styles.link,
-        ...(active ? styles.active : {}),
-        ...(admin ? styles.admin : {}),
+        ...(isActive ? styles.activeLink : {})
       }}
     >
       {label}
-    </Link>
+    </ScrollLink>
   );
 }
 
-/* ---------------- STYLES ---------------- */
 const styles = {
+
   header: {
     position: "fixed",
     top: 0,
     width: "100%",
     height: 72,
-    background: "rgba(5, 8, 20, 0.75)",
+    background: "rgba(5,8,20,0.75)",
     backdropFilter: "blur(16px)",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
     zIndex: 1000,
@@ -86,37 +115,39 @@ const styles = {
   },
 
   logo: {
-    fontSize: "1.5rem",
+    fontSize: "1.6rem",
     fontWeight: 900,
-    textDecoration: "none",
     letterSpacing: 1,
+    cursor: "pointer",
+    transition: "0.3s",
   },
 
   links: {
     display: "flex",
     alignItems: "center",
-    gap: 18,
+    gap: 20,
   },
 
   link: {
     color: "#cfd8ff",
-    textDecoration: "none",
     fontSize: "0.95rem",
-    padding: "8px 14px",
+    padding: "8px 16px",
     borderRadius: 999,
+    cursor: "pointer",
     transition: "all 0.25s ease",
-    whiteSpace: "nowrap",
   },
 
-  active: {
+  activeLink: {
     background: "linear-gradient(90deg,#00eaff,#ff00e1)",
     color: "#041017",
     fontWeight: 700,
+    boxShadow: "0 0 12px rgba(0,234,255,0.6)",
   },
 
   admin: {
     border: "1px solid #ff00e1",
     color: "#ff00e1",
     fontWeight: 700,
+    padding: "8px 18px",
   },
 };

@@ -5,13 +5,11 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,96 +24,63 @@ import com.sanjayverma.portfolio.filter.JwtAuthenticationFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(
-            JwtAuthenticationFilter jwtFilter,
-            UserDetailsService userDetailsService) {
-        this.jwtFilter = jwtFilter;
-        this.userDetailsService = userDetailsService;
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+            JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
-
-            .authorizeHttpRequests(auth -> auth
-
-                // ===== PUBLIC ROUTES =====
-                .requestMatchers(
-                        "/api/auth/**",
-                        "/api/projects/**",
-                        "/api/skills/**",
-                        "/api/achievements/**",
-                        "/api/games/**",
-                        "/api/contact/save",
-                        "/images/**",
-                        "/static/**",
-                        "/"
-                ).permitAll()
-
-                // ===== ADMIN PROTECTED =====
-                .requestMatchers(
-                        "/api/contact/all",
-                        "/api/contact/delete/**",
-                        "/api/admin/**"
-                ).authenticated()
-
-                .anyRequest().authenticated()
-            )
-
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-
-            .authenticationProvider(authenticationProvider())
-
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/admin/setup").permitAll()
+                        .requestMatchers("/api/projects", "/api/projects/**").permitAll()
+                        .requestMatchers("/api/achievements", "/api/achievements/**").permitAll()
+                        .requestMatchers("/api/trainings", "/api/trainings/**").permitAll()
+                        .requestMatchers("/api/certifications", "/api/certifications/**").permitAll()
+                        .requestMatchers("/api/skills", "/api/skills/**").permitAll()
+                        .requestMatchers("/api/games", "/api/games/**").permitAll()
+                        .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
+                        .requestMatchers("/api/contact", "/api/contact/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/messages/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
 
-    // 🔐 Authentication Provider (VERY IMPORTANT)
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    // 🔐 Password Encoder
+    // ✅ REQUIRED
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🔐 Authentication Manager
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
-    // 🌍 CORS Configuration
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:5173"
-        ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }

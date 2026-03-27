@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <!-- ===================================================== -->
+    <!--      Maven Settings Configuration (TechWithSanjay)    -->
+    <!-- ===================================================== -->
+
+    <!-- 1. Proxy Configuration (optional)
+         Uncomment only if your internet uses a corporate proxy -->
+    <!--
+    <proxies>
+        <proxy>
+            <id>myproxy</id>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host>proxy.yourcompany.com</host>
+            <port>8080</port>
+            <username>your-username</username>
+            <password>your-password</password>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
+        </proxy>
+    </proxies>
+    -->
+
+    <!-- 2. Mirrors for faster downloads -->
+    <mirrors>
+        <!-- Aliyun public mirror -->
+        <mirror>
+            <id>aliyunmaven</id>
+            <name>Aliyun Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+
+        <!-- Google Maven mirror (backup) -->
+        <mirror>
+            <id>google-maven</id>
+            <name>Google Maven Mirror</name>
+            <url>https://maven.google.com</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <!-- 3. Profiles (repositories + plugin repos) -->
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <!-- 4. Active profile -->
+    <activeProfiles>
+        <activeProfile>default</activeProfile>
+    </activeProfiles>
+
+</settings>
