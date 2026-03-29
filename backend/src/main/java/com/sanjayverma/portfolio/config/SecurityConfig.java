@@ -32,16 +32,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/setup").permitAll()
-                        .requestMatchers("/api/projects", "/api/projects/**").permitAll()
-                        .requestMatchers("/api/achievements", "/api/achievements/**").permitAll()
-                        .requestMatchers("/api/trainings", "/api/trainings/**").permitAll()
-                        .requestMatchers("/api/certifications", "/api/certifications/**").permitAll()
-                        .requestMatchers("/api/skills", "/api/skills/**").permitAll()
-                        .requestMatchers("/api/games", "/api/games/**").permitAll()
-                        .requestMatchers("/api/visitors", "/api/visitors/**").permitAll()
-                        .requestMatchers("/api/contact", "/api/contact/**").permitAll()
+                        .requestMatchers("/api/projects/**").permitAll()
+                        .requestMatchers("/api/achievements/**").permitAll()
+                        .requestMatchers("/api/trainings/**").permitAll()
+                        .requestMatchers("/api/certifications/**").permitAll()
+                        .requestMatchers("/api/skills/**").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/messages/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
@@ -51,34 +49,37 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ✅ REQUIRED
+    // 🔐 Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 🔑 Authentication Manager
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // 🔄 JWT Filter
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
 
+    // 🌐 CORS CONFIG (only ONE place)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
         source.registerCorsConfiguration("/**", config);
 
         return source;

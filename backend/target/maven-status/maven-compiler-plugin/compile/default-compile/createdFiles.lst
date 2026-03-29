@@ -22,7 +22,6 @@ com\sanjayverma\portfolio\controller\GameController.class
 com\sanjayverma\portfolio\controller\AdminSetupController.class
 com\sanjayverma\portfolio\model\Skill.class
 com\sanjayverma\portfolio\util\JwtUtil.class
-com\sanjayverma\portfolio\config\CorsConfig.class
 com\sanjayverma\portfolio\controller\HomeController.class
 com\sanjayverma\portfolio\controller\SkillsController.class
 com\sanjayverma\portfolio\controller\UserController.class
