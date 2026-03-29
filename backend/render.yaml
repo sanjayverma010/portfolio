@@ -2,5 +2,6 @@ services:
   - type: web
     name: portfolio-backend
     env: java
+    rootDir: backend
     buildCommand: mvn clean package
     startCommand: java -jar target/*.jar
