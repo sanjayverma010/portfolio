@@ -1,17 +1,11 @@
-# Use official Java image
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
-# Install Maven
 RUN apt-get update && apt-get install -y maven
 
-# Build project
 RUN mvn clean package -DskipTests
 
-# Run app
 CMD ["java", "-jar", "target/*.jar"]
