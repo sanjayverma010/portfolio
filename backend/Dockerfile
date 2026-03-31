@@ -1,11 +1,11 @@
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY . .
+COPY target/*.jar app.jar
 
-RUN apt-get update && apt-get install -y maven
+# Expose port
+EXPOSE 8080
 
-RUN mvn clean package -DskipTests
-
-CMD ["sh", "-c", "java -jar target/*.jar"]
+# Run with env support
+ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
