@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function Skills() {
 
@@ -15,8 +15,8 @@ export default function Skills() {
   };
 
   useEffect(() => {
-    API.get("/skills")
-      .then(res => setSkills(res.data || []))
+    api.get("/skills")
+      .then(data => setSkills(data || []))
       .catch(() => setSkills([]))
       .finally(() => setLoading(false));
   }, []);

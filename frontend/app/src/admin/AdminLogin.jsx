@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function AdminLogin() {
 
@@ -14,15 +14,15 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", {
+      const data = await api.post("/auth/login", {
         username,
         password,
       });
 
-      localStorage.setItem("adminToken", res.data.token);
+      localStorage.setItem("adminToken", data.token);
       navigate("/admin/dashboard");
 
-    } catch {
+    } catch (err) {
       setError("Invalid credentials");
     }
   };

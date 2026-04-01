@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaSpinner, FaTrophy } from "react-icons/fa";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function Certifications() {
 
@@ -14,10 +14,10 @@ export default function Certifications() {
 
       try {
 
-        const res = await API.get("/certifications");
+        const data = await api.get("/certifications");
 
-        if (Array.isArray(res.data)) {
-          setCertifications(res.data);
+        if (Array.isArray(data)) {
+          setCertifications(data);
         } else {
           setCertifications([]);
         }

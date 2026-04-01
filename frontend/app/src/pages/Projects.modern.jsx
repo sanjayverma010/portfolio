@@ -4,7 +4,7 @@ import { FaProjectDiagram, FaTimes } from "react-icons/fa";
 import AnimatedCard from "../components/AnimatedCard";
 import PageWrapper from "../components/PageWrapper";
 import SectionTitle from "../components/SectionTitle";
-import API from "../services/api";
+import api from "../services/api";
 import { containerVariants } from "../utils/animations";
 
 const parseTech = (tech) => {
@@ -19,8 +19,8 @@ export default function Projects() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    API.get("/projects")
-      .then(res => setProjects(res.data || []))
+    api.get("/projects")
+      .then(data => setProjects(data || []))
       .catch(() => setProjects([]))
       .finally(() => setLoading(false));
   }, []);

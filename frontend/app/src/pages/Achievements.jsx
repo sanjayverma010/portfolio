@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function Achievements() {
 
@@ -12,10 +12,10 @@ export default function Achievements() {
     const fetchAchievements = async () => {
 
       try {
-        const res = await API.get("/achievements");
+        const data = await api.get("/achievements");
 
-        if (Array.isArray(res.data)) {
-          setItems(res.data);
+        if (Array.isArray(data)) {
+          setItems(data);
         } else {
           setItems([]);
         }

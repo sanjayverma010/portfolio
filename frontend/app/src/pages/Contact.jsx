@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEnvelope, FaLinkedin, FaPhone } from "react-icons/fa";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function Contact() {
 
@@ -25,7 +25,7 @@ export default function Contact() {
 
     try {
 
-      await API.post("/messages", form);
+      await api.post("/contact", form);
 
       setStatus("✅ Message sent successfully!");
 

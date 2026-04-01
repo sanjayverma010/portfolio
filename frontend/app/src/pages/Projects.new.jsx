@@ -4,7 +4,7 @@ import { FaExternalLinkAlt, FaFolderOpen, FaGithub } from "react-icons/fa";
 import AnimatedCard from "../components/AnimatedCard";
 import PageWrapper from "../components/PageWrapper";
 import SectionTitle from "../components/SectionTitle";
-import API from "../services/api";
+import api from "../services/api";
 import { containerVariants } from "../utils/animations";
 
 /* ================= HELPERS ================= */
@@ -20,8 +20,8 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
-    API.get("/projects")
-      .then((res) => setProjects(res.data || []))
+    api.get("/projects")
+      .then((data) => setProjects(data || []))
       .catch(() => setProjects([]));
   }, []);
 

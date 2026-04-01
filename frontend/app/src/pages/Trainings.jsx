@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaBook, FaSpinner } from "react-icons/fa";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function Trainings() {
 
@@ -14,10 +14,10 @@ export default function Trainings() {
 
       try {
 
-        const res = await API.get("/trainings");
+        const data = await api.get("/trainings");
 
-        if (Array.isArray(res.data)) {
-          setTrainings(res.data);
+        if (Array.isArray(data)) {
+          setTrainings(data);
         } else {
           setTrainings([]);
         }

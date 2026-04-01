@@ -1,7 +1,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import API from "../services/api";
 
 /* ================= HELPERS ================= */
 
@@ -22,8 +21,8 @@ export default function Projects() {
   const [active, setActive] = useState(null);
 
   useEffect(() => {
-    API.get("/projects")
-      .then((res) => setProjects(res.data || []))
+    api.get("/projects")
+      .then((data) => setProjects(data || []))
       .catch(() => setProjects([]));
   }, []);
 

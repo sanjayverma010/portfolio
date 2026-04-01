@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FaCode } from "react-icons/fa";
 import PageWrapper from "../components/PageWrapper";
 import SectionTitle from "../components/SectionTitle";
-import API from "../services/api";
+import api from "../services/api";
 import { containerVariants, itemVariants } from "../utils/animations";
 
 export default function Skills() {
@@ -11,8 +11,8 @@ export default function Skills() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    API.get("/skills")
-      .then(res => setSkills(res.data || []))
+    api.get("/skills")
+      .then(data => setSkills(data || []))
       .catch(() => setSkills([]))
       .finally(() => setLoading(false));
   }, []);

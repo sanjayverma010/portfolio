@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import api from "../services/api";
 
 export default function MessagesAdmin() {
   const [messages, setMessages] = useState([]);
@@ -13,8 +13,8 @@ export default function MessagesAdmin() {
   const fetchMessages = async () => {
     try {
       setLoading(true);
-      const res = await API.get("/contact/all");
-      setMessages(res.data);
+      const data = await api.get("/contact/all");
+      setMessages(data);
     } catch (err) {
       console.log(err);
       setError("Failed to load messages");
