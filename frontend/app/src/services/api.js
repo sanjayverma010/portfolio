@@ -60,9 +60,19 @@ API.interceptors.response.use(
       alert("Session expired. Please login again.");
       window.location.href = "/admin/login";
     } else if (error.response?.status === 403) {
-      alert("Access denied.");
+      alert("Access denied. Please check your permissions.");
+    } else if (error.response?.status === 404) {
+      console.error("API endpoint not found:", error.config?.url);
+      alert("The requested resource was not found.");
+    } else if (error.response?.status >= 500) {
+      console.error("Server error:", error.response?.data);
+      alert("Server error. Please try again later.");
     } else if (!error.response) {
-      alert("Network error.");
+      console.error("Network error:", error.message);
+      alert("Network error. Please check your connection and try again.");
+    } else {
+      console.error("API error:", error.response?.data || error.message);
+      alert("An error occurred. Please try again.");
     }
 
     return Promise.reject(error);
