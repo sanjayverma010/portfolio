@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+                .cors(Customizer.withDefaults()) // ✅ Enable CORS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/setup").permitAll()
@@ -68,7 +68,7 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter();
     }
 
-    // 🌐 CORS CONFIG (only ONE place)
+    // 🌐 CORS CONFIG (FINAL FIX)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -76,9 +76,15 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "https://portfolio-umber-phi-mji0v85tic.vercel.app"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                "https://portfolio-dv8s.vercel.app" // ✅ UPDATED DOMAIN
+        ));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
+
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
